@@ -75,8 +75,7 @@ def create_contacts(service,name,phoneNumber1,phoneNumber2,emailAddresses1,email
 
 service=get_service()
 def list_contacts(service):
-# Call the People API
-    print('List 100 connection names')
+
     results = service.people().connections().list(
         resourceName='people/me',
         pageSize=1000,
