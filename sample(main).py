@@ -96,18 +96,18 @@ def list_contacts(service):
         return name,resource_Name,etag
 #list_contacts(service)
 
-def merge_contacts(list_contacts,create_contacts):
+def merge_contacts():
     name=list_contacts(service)
     for name in list_contacts:
         if name == create_contacts:
-            update_contacts()
+            update_contacts(service)
     if create_contacts not in  list_contacts:
-        create_contacts()
-#merge_contacts(list_contacts,create_contacts)        
+        create_contacts(service)
+#merge_contacts()        
 
 def update_contacts(service):
     resource_Name,etag=list_contacts()
-    name,phonenumber,emailAddresses,addresses,urls=get_contacts(service)
+    name,phonenumber,emailaddresses,urls=get_contacts(service)
     service.people().updateContact( resourceName=resource_Name,updatePersonFields=('Names','phoneNumbers','emailAddresses','addresses','urls'),body={
         
         "etag":etag,
@@ -129,23 +129,14 @@ def update_contacts(service):
         "emailAddresses": [
         {
          "type": "home",
-         "value": emailAddresses
+         "value": emailaddresses[0]
         },
         {
          "type": "work",
-         "value": 'emailAddresses2'
+         "value": emailaddresses[1]
         }
         ],
-        "addresses": [
-        {
-         "type": "Addresses_home",
-         "streetAddress": addresses
-        },
-        {
-         "type": "Addresses_work",
-         "streetAddress": 'workAddresses'
-        }
-        ],
+        
         "urls": [
          {
          "type": "work",
@@ -168,18 +159,19 @@ def get_contacts(service):
         name = names[0].get('displayName')
         
         emailAddresses = person.get('emailAddresses', [])
-        
+        emailaddresses=[]
+        for i in range (len(emailAddresses)):
+            emailaddresses.append(emailAddresses[i]['value'])
         
         phoneNumbers=person.get('phoneNumbers',)
         phonenumber=[]
         for i in range (len(phoneNumbers)):
             phonenumber.append(phoneNumbers[i]['value'])
         
-        addresses=person.get('addresses',[])
         
         urls=person.get('urls',[])
         
-        get_info =[name,emailAddresses,phonenumber,addresses,urls]
-        print(emailAddresses[0]['value'])
+        get_info =[name,emailaddresses,phonenumber,urls]
+        return get_info
         
-get_contacts(service)        
+get_contacts(service)    
