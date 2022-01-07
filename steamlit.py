@@ -11,3 +11,4 @@ with st.form(key='my_form'):
 if submit_button:
     service=get_service()
     create_contacts(service,name,phoneNumber,emailAddresses)
+    st.success('Contact Has Been Created!')
