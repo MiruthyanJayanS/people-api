@@ -16,8 +16,7 @@ def get_service():
     
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
+    # created automatically when the authorization flow completes for the first time.
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
@@ -36,7 +35,7 @@ def get_service():
 service=get_service()
 def create_contacts(service,contact_creation_info):
     name,phoneNumber1,phoneNumber2,emailAddresses1,emailAddresses2,homeAddresses,workAddresses,link=contact_creation_info
-    # CREATING CONTACTSSSSSSSS
+    #contact creation.
     service.people().createContact( body={
         "names": [
             {
@@ -81,6 +80,7 @@ def create_contacts(service,contact_creation_info):
         ]
     }).execute()
 def list_contacts(service):
+    #listing contacts for updation.
     results = service.people().connections().list(
             resourceName='people/me',
             pageSize=10,
@@ -94,18 +94,20 @@ def list_contacts(service):
         etag = person.get('etag', [])
         
         return name,resource_Name,etag
-#list_contacts(service)
+list_contacts(service)
 
 def merge_contacts():
+    #merging the contacts
     name=list_contacts(service)
     for name in list_contacts:
         if name == create_contacts:
             update_contacts(service)
     if create_contacts not in  list_contacts:
         create_contacts(service)
-#merge_contacts()        
+merge_contacts()        
 
 def update_contacts(service):
+    #updating contacts.
     resource_Name,etag=list_contacts()
     name,phonenumber,emailaddresses,urls=get_contacts(service)
     service.people().updateContact( resourceName=resource_Name,updatePersonFields=('Names','phoneNumbers','emailAddresses','addresses','urls'),body={
@@ -144,9 +146,10 @@ def update_contacts(service):
          }
         ]
         }).execute()
-#update_contacts(service)
+update_contacts(service)
 
 def get_contacts(service):
+    #getting contacts for updation.
     results = service.people().connections().list(
             resourceName='people/me',
             pageSize=10,
@@ -174,4 +177,5 @@ def get_contacts(service):
         get_info =[name,emailaddresses,phonenumber,urls]
         return get_info
         
-get_contacts(service)    
+get_contacts(service)        
+
