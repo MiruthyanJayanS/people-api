@@ -1,7 +1,7 @@
 import streamlit as st
 from quickstart import *
 
-def create_contacts(service,name):
+def create_contacts(service,name,phoneNumber_home,phoneNumber_work,emailAddress_home,emailAddress_work):
     with st.form(key='my_form'):
         name = st.text_input(label='Name')
         phoneNumber1 =  st.text_input(label='phoneNumber_home')
@@ -14,7 +14,7 @@ def create_contacts(service,name):
 
     if submit_button:
         service=get_service()
-        create_contacts(service,name)
+        create_contacts(service,name,phoneNumber_home,phoneNumber_work,emailAddress_home,emailAddress_work)
 	
 	
 
